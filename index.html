@@ -32,6 +32,17 @@
         overflow-x: hidden;
       }
 
+      main {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #robots { order: 1; }
+      #scenes { order: 2; }
+      #tasks { order: 3; }
+      #primitives { order: 4; }
+      #sources { order: 5; }
+
       a { color: var(--green-dark); text-decoration: none; }
       a:hover { text-decoration: underline; }
 
@@ -393,10 +404,10 @@
           <span>BEHAVIOR-1K 高级函数支持</span>
         </a>
         <nav aria-label="页面导航">
-          <a href="#primitives">高级函数</a>
           <a href="#robots">支持机器人</a>
-          <a href="#scenes">支持场景</a>
-          <a href="#tasks">支持 Task</a>
+          <a href="#scenes">家务场景</a>
+          <a href="#tasks">家务 Task</a>
+          <a href="#primitives">高级函数</a>
           <a href="#sources">来源</a>
         </nav>
       </div>
@@ -406,11 +417,11 @@
       <div class="hero-content">
         <p class="eyebrow">数据口径：2026-07-02 | 官方文档</p>
         <h1><span class="h-line">BEHAVIOR-1K</span><span class="h-line">高级函数与</span><span class="h-line">场景任务支持</span></h1>
-        <p class="hero-lede">本页聚焦上游大脑规划能否落到 BEHAVIOR 已有的高级执行函数：函数名、参数、执行深度与机器人适配范围。</p>
+        <p class="hero-lede">本页先列出可用于家务任务的机器人、住宅场景与家务 Task，再说明这些任务能否落到 BEHAVIOR 已有的高级执行函数。</p>
         <div class="hero-metrics" aria-label="BEHAVIOR-1K support metrics">
-          <div class="metric"><strong>9</strong><span>Starter physical primitive enum entries</span></div>
-          <div class="metric"><strong>14</strong><span>Symbolic primitive enum entries</span></div>
-          <div class="metric"><strong>Tiago / R1</strong><span>官方声明 Starter 当前适配范围</span></div>
+          <div class="metric"><strong>12</strong><span>OmniGibson 官方文档口径 robots</span></div>
+          <div class="metric"><strong>住宅/花园</strong><span>本页只保留家务相关场景</span></div>
+          <div class="metric"><strong>Primitive</strong><span>最后评估高级函数承接层级</span></div>
         </div>
       </div>
     </div>
@@ -683,99 +694,56 @@
       <section class="band" id="scenes">
         <div class="wrap">
           <div class="section-head">
-            <h2>支持场景</h2>
-            <p>BEHAVIOR-1K Scene Knowledgebase 当前列出 51 个场景。表中字段包括 Scene、Rooms、Objects。</p>
+            <h2>家务场景支持</h2>
+            <p>本页只保留与家务活动直接相关的住宅、室内、花园类场景，作为当前大脑家务能力测评的场景范围。</p>
           </div>
 
           <div class="count-row" aria-label="scene category summary">
-            <div class="count-card"><strong>21+</strong><span>住宅、室内与花园类条目，含 Beechwood、Merom、Pomaria、Wainscott 等系列。</span></div>
-            <div class="count-card"><strong>4</strong><span>Grocery store 条目：asian、cafe、convenience、half_stocked。</span></div>
-            <div class="count-card"><strong>5</strong><span>Office 条目：bike、cubicles_left、cubicles_right、large、vendor_machine。</span></div>
-            <div class="count-card"><strong>6</strong><span>Restaurant 条目：asian、brunch、cafeteria、diner、hotel、urban。</span></div>
+            <div class="count-card"><strong>住宅室内</strong><span>适合厨房、客厅、卧室、浴室、收纳、清洁等室内家务任务。</span></div>
+            <div class="count-card"><strong>住宅花园</strong><span>适合浇水、草坪维护、泳池/热水浴缸维护等户外家务任务。</span></div>
+            <div class="count-card"><strong>多房间结构</strong><span>部分住宅场景具备多房间布局，可覆盖跨房间导航与取放。</span></div>
+            <div class="count-card"><strong>对象密度</strong><span>住宅场景包含家具、容器、工具、食品、清洁用品等可交互对象。</span></div>
           </div>
 
           <div class="matrix">
             <table>
               <thead>
                 <tr>
-                  <th>场景组</th>
+                  <th>家务场景类型</th>
                   <th>代表场景</th>
                   <th>Rooms</th>
                   <th>Objects</th>
+                  <th>适合覆盖的家务任务</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>住宅 / 花园</td>
+                  <td>完整住宅</td>
                   <td>house_single_floor</td>
                   <td>21</td>
                   <td>950</td>
+                  <td>跨房间导航、厨房操作、收纳、清洁、取放。</td>
                 </tr>
                 <tr>
-                  <td>住宅 / 花园</td>
+                  <td>住宅花园</td>
                   <td>Wainscott_0_garden</td>
                   <td>13</td>
                   <td>479</td>
+                  <td>花园维护、浇水、户外清洁、泳池/热水浴缸相关任务。</td>
                 </tr>
                 <tr>
-                  <td>住宅 / 花园</td>
+                  <td>住宅花园</td>
                   <td>Beechwood_0_garden</td>
                   <td>12</td>
                   <td>346</td>
+                  <td>户外目标导航、工具取放、化学品添加、植物维护。</td>
                 </tr>
                 <tr>
-                  <td>商店</td>
-                  <td>grocery_store_cafe</td>
-                  <td>5</td>
-                  <td>7020</td>
-                </tr>
-                <tr>
-                  <td>商店</td>
-                  <td>grocery_store_asian</td>
-                  <td>3</td>
-                  <td>3407</td>
-                </tr>
-                <tr>
-                  <td>办公</td>
-                  <td>office_large</td>
-                  <td>26</td>
-                  <td>1129</td>
-                </tr>
-                <tr>
-                  <td>餐饮</td>
-                  <td>restaurant_urban</td>
-                  <td>5</td>
-                  <td>1364</td>
-                </tr>
-                <tr>
-                  <td>餐饮</td>
-                  <td>restaurant_hotel</td>
-                  <td>6</td>
-                  <td>1050</td>
-                </tr>
-                <tr>
-                  <td>学校</td>
-                  <td>school_computer_lab_and_infirmary</td>
-                  <td>7</td>
-                  <td>796</td>
-                </tr>
-                <tr>
-                  <td>学校</td>
-                  <td>school_chemistry</td>
-                  <td>4</td>
-                  <td>741</td>
-                </tr>
-                <tr>
-                  <td>酒店 / 公共空间</td>
-                  <td>hall_conference_large</td>
-                  <td>3</td>
-                  <td>3387</td>
-                </tr>
-                <tr>
-                  <td>酒店 / 公共空间</td>
-                  <td>hotel_gym_spa</td>
-                  <td>9</td>
-                  <td>316</td>
+                  <td>住宅系列</td>
+                  <td>Beechwood / Merom / Pomaria / Wainscott 系列</td>
+                  <td>知识库逐场景列出</td>
+                  <td>知识库逐场景列出</td>
+                  <td>室内整理、厨房准备、地面清洁、容器操作、庭院维护。</td>
                 </tr>
               </tbody>
             </table>
@@ -786,14 +754,14 @@
       <section id="tasks">
         <div class="wrap">
           <div class="section-head">
-            <h2>支持 Task</h2>
-            <p>BEHAVIOR-1K Task Knowledgebase 当前列出 1016 个 Task。表中字段包括 Task Name、Synsets、Matched Scenes、Predicates、Required Features。</p>
+            <h2>家务 Task 支持</h2>
+            <p>BEHAVIOR-1K Task Knowledgebase 当前列出 1016 个 Task。本页只保留能体现家务执行闭环的任务类型：导航取放、收纳、清洁、厨房处理、洗涤和庭院/泳池维护。</p>
           </div>
 
           <div class="grid-3">
             <article class="card">
-              <h3>商店购买 / 装袋</h3>
-              <p><strong>示例：</strong>bag_groceries-0、buy_food_for_a_party-0、buy_school_supplies-0。常见场景包括 grocery_store_asian、grocery_store_cafe、grocery_store_convenience。</p>
+              <h3>收纳 / 搬运 / 拆包</h3>
+              <p><strong>示例：</strong>unloading_groceries-0、unpacking_suitcase-0、unpacking_moving_van-0、unloading_shopping_items-0。常见 predicates 包括 ontop、inside、nextto。</p>
             </article>
             <article class="card">
               <h3>烹饪 / 厨房处理</h3>
@@ -804,16 +772,16 @@
               <p><strong>示例：</strong>vacuuming_floors-0、wash_a_backpack-0、wash_baby_bottles-0、treating_stains-0。Required Features 可包含 visual substance、physical substance、cloth。</p>
             </article>
             <article class="card">
-              <h3>园艺 / 户外维护</h3>
-              <p><strong>示例：</strong>adding_chemicals_to_lawn-0、applying_pesticides-0、buy_basic_garden_tools-0、buy_used_gardening_equipment-0。常见场景包括 garden 与 grocery store。</p>
+              <h3>地面 / 表面维护</h3>
+              <p><strong>示例：</strong>vacuuming_floors-0、waxing_floors-0、washing_windows-0。适合覆盖导航到目标区域、工具使用、表面覆盖状态变化。</p>
             </article>
             <article class="card">
               <h3>泳池 / 热水浴缸</h3>
               <p><strong>示例：</strong>adding_chemicals_to_hot_tub-0、adding_chemicals_to_pool-0、turning_on_the_hot_tub-0、turning_off_the_hot_tub-0。可涉及 contains、filled、toggled_on。</p>
             </article>
             <article class="card">
-              <h3>收纳 / 搬运 / 拆包</h3>
-              <p><strong>示例：</strong>unloading_groceries-0、unpacking_suitcase-0、unpacking_moving_van-0、unloading_shopping_items-0。常见 predicates 包括 ontop、inside、nextto。</p>
+              <h3>园艺 / 户外维护</h3>
+              <p><strong>示例：</strong>adding_chemicals_to_lawn-0、applying_pesticides-0、watering_outdoor_plants-0、watering_outdoor_flowers-0。常见场景包括住宅花园。</p>
             </article>
           </div>
 
@@ -821,48 +789,48 @@
             <table>
               <thead>
                 <tr>
-                  <th>Task 示例</th>
-                  <th>Synsets 摘要</th>
+                  <th>家务 Task 示例</th>
+                  <th>涉及对象</th>
                   <th>Matched Scenes 摘要</th>
                   <th>Predicates / Required Features</th>
+                  <th>对应高级函数需求</th>
                 </tr>
               </thead>
               <tbody>
+                <tr>
+                  <td>unloading_groceries-0</td>
+                  <td>cabinet、sack、yogurt、refrigerator、egg、bread、corn flakes、floor</td>
+                  <td>住宅厨房、储物空间、冰箱、柜体和地面区域；家务测评中只选择住宅场景实例。</td>
+                  <td>open、ontop、inside</td>
+                  <td><code>NAVIGATE_TO</code>、<code>GRASP</code>、<code>PLACE_INSIDE</code>、<code>PLACE_ON_TOP</code></td>
+                </tr>
+                <tr>
+                  <td>baking_sugar_cookies-0</td>
+                  <td>countertop、butter、sugar、egg、oven、flour、cookie sheet 等</td>
+                  <td>住宅厨房、台面、烤箱、柜体、餐具和食品处理区域。</td>
+                  <td>real、future、cooked、ontop、insource、inside、filled；transition、physical substance</td>
+                  <td><code>NAVIGATE_TO</code>、<code>GRASP</code>、<code>PLACE_ON_TOP</code>；烹饪状态更多依赖 symbolic state。</td>
+                </tr>
+                <tr>
+                  <td>vacuuming_floors-0</td>
+                  <td>floor、vacuum、dust</td>
+                  <td>住宅室内、卧室、客厅、走廊、地面清洁区域。</td>
+                  <td>covered、ontop；visual substance</td>
+                  <td>物理 primitive 当前无稳定 <code>WIPE</code>；symbolic primitive 可验证 Covered 状态变化。</td>
+                </tr>
                 <tr>
                   <td>adding_chemicals_to_hot_tub-0</td>
                   <td>chlorine bottle、chlorine、water、hot tub、floor</td>
                   <td>Beechwood_0_garden、Merom_0_garden、Pomaria_0_garden、Rs_garden、Wainscott_0_garden、house_single_floor 等</td>
                   <td>contains、ontop、filled；physical substance</td>
-                </tr>
-                <tr>
-                  <td>bag_groceries-0</td>
-                  <td>canned food、sack、egg、checkout、apple、orange juice bottle、floor</td>
-                  <td>grocery_store_asian、grocery_store_cafe、grocery_store_convenience</td>
-                  <td>ontop、inside</td>
-                </tr>
-                <tr>
-                  <td>baking_sugar_cookies-0</td>
-                  <td>countertop、butter、sugar、egg、oven、flour、cookie sheet 等</td>
-                  <td>住宅场景与 restaurant_asian、restaurant_brunch、restaurant_diner、restaurant_hotel、restaurant_urban 等</td>
-                  <td>real、future、cooked、ontop、insource、inside、filled；transition、physical substance</td>
-                </tr>
-                <tr>
-                  <td>vacuuming_floors-0</td>
-                  <td>floor、vacuum、dust</td>
-                  <td>Beechwood_1_int、Wainscott_1_int、gates_bedroom、hotel_suite_large、house_single_floor 等</td>
-                  <td>covered、ontop；visual substance</td>
-                </tr>
-                <tr>
-                  <td>unloading_groceries-0</td>
-                  <td>cabinet、sack、yogurt、refrigerator、egg、bread、corn flakes、floor</td>
-                  <td>住宅场景与 restaurant_asian、restaurant_brunch、restaurant_cafeteria、restaurant_diner、restaurant_hotel、restaurant_urban 等</td>
-                  <td>open、ontop、inside</td>
+                  <td><code>NAVIGATE_TO</code>、<code>GRASP</code>、<code>PLACE_INSIDE</code>；液体/物质状态更多依赖 symbolic state。</td>
                 </tr>
                 <tr>
                   <td>wash_baby_bottles-0</td>
                   <td>bottle、disinfectant、scrub brush、water、dishwasher、sink、floor</td>
-                  <td>住宅场景与 restaurant_brunch、restaurant_hotel、restaurant_urban 等</td>
+                  <td>住宅厨房、洗涤区域、水槽、洗碗机和台面区域。</td>
                   <td>ontop、insource、covered、inside、filled；physical substance</td>
+                  <td><code>NAVIGATE_TO</code>、<code>GRASP</code>、<code>PLACE_INSIDE</code>；洗涤状态更多依赖 symbolic primitive。</td>
                 </tr>
               </tbody>
             </table>
