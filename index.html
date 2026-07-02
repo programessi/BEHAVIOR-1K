@@ -152,35 +152,6 @@
 
       .h-line { display: block; }
 
-      .hero-metrics {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(160px, 1fr));
-        gap: 12px;
-        max-width: 760px;
-        margin-top: 34px;
-      }
-
-      .metric {
-        min-height: 104px;
-        padding: 18px;
-        border: 1px solid rgba(255,255,255,0.24);
-        border-radius: 8px;
-        background: rgba(255,255,255,0.11);
-      }
-
-      .metric strong {
-        display: block;
-        font-size: 30px;
-        line-height: 1;
-      }
-
-      .metric span {
-        display: block;
-        margin-top: 10px;
-        color: rgba(255,255,255,0.78);
-        font-size: 13px;
-      }
-
       section { padding: 74px 0; }
       .band { background: #fff; }
       .wrap { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
@@ -376,7 +347,7 @@
         nav { justify-content: flex-start; }
         .hero { min-height: auto; }
         .hero-content { padding: 70px 0 112px; }
-        .hero-metrics, .section-head, .grid-3, .grid-4, .count-row, .source-list {
+        .section-head, .grid-3, .grid-4, .count-row, .source-list {
           grid-template-columns: 1fr;
         }
       }
@@ -392,7 +363,7 @@
           word-break: break-all;
         }
         .hero-lede { font-size: 17px; }
-        .metric, .card { padding: 18px; }
+        .card { padding: 18px; }
       }
     </style>
   </head>
@@ -418,11 +389,6 @@
         <p class="eyebrow">数据口径：2026-07-02 | 官方文档</p>
         <h1><span class="h-line">BEHAVIOR-1K</span><span class="h-line">高级函数与</span><span class="h-line">场景任务支持</span></h1>
         <p class="hero-lede">本页先列出可用于家务任务的机器人、住宅场景与家务 Task，再说明这些任务能否落到 BEHAVIOR 已有的高级执行函数。</p>
-        <div class="hero-metrics" aria-label="BEHAVIOR-1K support metrics">
-          <div class="metric"><strong>12</strong><span>OmniGibson 官方文档口径 robots</span></div>
-          <div class="metric"><strong>住宅/花园</strong><span>本页只保留家务相关场景</span></div>
-          <div class="metric"><strong>Primitive</strong><span>最后评估高级函数承接层级</span></div>
-        </div>
       </div>
     </div>
 
