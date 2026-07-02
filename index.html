@@ -3,21 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BEHAVIOR-1K | 大脑性能评测适用性分析</title>
-    <meta name="description" content="BEHAVIOR-1K 对具身智能大脑性能评测的适用性分析：现有机器人、现有任务、观测、导航、运动控制、操作和评测指标。">
+    <title>BEHAVIOR-1K | 场景任务支持清单</title>
+    <meta name="description" content="BEHAVIOR-1K 当前支持的机器人、场景与任务清单。">
     <style>
       :root {
         --ink: #17211b;
-        --muted: #58645d;
-        --line: #d9e2db;
+        --muted: #59665f;
+        --line: #d8e1db;
         --paper: #f7faf7;
         --panel: #ffffff;
         --green: #176744;
         --green-dark: #0f4f34;
         --blue: #245f93;
-        --orange: #a85d1c;
-        --red: #903731;
-        --shadow: 0 18px 48px rgba(25, 42, 31, 0.12);
+        --gold: #9a6a16;
+        --shadow: 0 16px 42px rgba(24, 43, 31, 0.1);
       }
 
       * { box-sizing: border-box; }
@@ -29,7 +28,7 @@
         color: var(--ink);
         font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
         background: var(--paper);
-        line-height: 1.6;
+        line-height: 1.62;
         overflow-x: hidden;
       }
 
@@ -39,19 +38,19 @@
       .topbar {
         position: sticky;
         top: 0;
-        z-index: 30;
-        border-bottom: 1px solid rgba(217, 226, 219, 0.9);
-        background: rgba(247, 250, 247, 0.94);
-        backdrop-filter: blur(14px);
+        z-index: 20;
+        border-bottom: 1px solid rgba(216, 225, 219, 0.92);
+        background: rgba(247, 250, 247, 0.95);
+        backdrop-filter: blur(12px);
       }
 
       .topbar-inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 20px;
+        gap: 24px;
         width: min(1180px, calc(100% - 40px));
-        min-height: 62px;
+        min-height: 64px;
         margin: 0 auto;
       }
 
@@ -61,6 +60,7 @@
         gap: 10px;
         color: var(--green-dark);
         font-weight: 800;
+        white-space: nowrap;
       }
 
       .brand img {
@@ -73,21 +73,20 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-end;
-        gap: 16px;
+        gap: 18px;
         font-size: 14px;
       }
 
-      nav a { color: #304039; white-space: nowrap; }
+      nav a { color: #31433a; white-space: nowrap; }
 
       .hero {
         position: relative;
-        min-height: 82vh;
+        min-height: 68vh;
         display: flex;
         align-items: center;
-        overflow: hidden;
         color: #fff;
         background:
-          linear-gradient(90deg, rgba(9, 21, 14, 0.91), rgba(9, 21, 14, 0.67) 52%, rgba(9, 21, 14, 0.14)),
+          linear-gradient(90deg, rgba(9, 21, 14, 0.9), rgba(9, 21, 14, 0.7) 54%, rgba(9, 21, 14, 0.18)),
           url("https://behavior.stanford.edu/assets/challenge_2025/dataset_rgb.png") center / cover no-repeat;
       }
 
@@ -97,7 +96,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        height: 96px;
+        height: 86px;
         background: linear-gradient(0deg, var(--paper), rgba(247, 250, 247, 0));
       }
 
@@ -106,11 +105,12 @@
         z-index: 1;
         width: min(1180px, calc(100% - 40px));
         margin: 0 auto;
-        padding: 82px 0 130px;
+        padding: 78px 0 120px;
       }
 
       .eyebrow {
-        display: inline-flex;
+        display: inline-block;
+        max-width: 100%;
         margin: 0 0 18px;
         padding: 7px 12px;
         border: 1px solid rgba(255,255,255,0.28);
@@ -119,33 +119,38 @@
         background: rgba(255,255,255,0.1);
         font-size: 13px;
         font-weight: 700;
+        overflow-wrap: anywhere;
       }
 
       h1 {
-        max-width: 860px;
+        max-width: 900px;
         margin: 0;
-        font-size: clamp(42px, 6.5vw, 76px);
+        font-size: clamp(40px, 6.2vw, 74px);
         line-height: 1.08;
         letter-spacing: 0;
+        overflow-wrap: anywhere;
       }
 
       .hero-lede {
-        max-width: 820px;
+        max-width: 780px;
         margin: 24px 0 0;
         color: rgba(255,255,255,0.88);
-        font-size: clamp(18px, 2.2vw, 23px);
+        font-size: clamp(18px, 2vw, 22px);
+        overflow-wrap: anywhere;
       }
+
+      .h-line { display: block; }
 
       .hero-metrics {
         display: grid;
-        grid-template-columns: repeat(4, minmax(120px, 1fr));
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
         gap: 12px;
-        max-width: 900px;
-        margin-top: 36px;
+        max-width: 760px;
+        margin-top: 34px;
       }
 
       .metric {
-        min-height: 108px;
+        min-height: 104px;
         padding: 18px;
         border: 1px solid rgba(255,255,255,0.24);
         border-radius: 8px;
@@ -154,7 +159,7 @@
 
       .metric strong {
         display: block;
-        font-size: 28px;
+        font-size: 30px;
         line-height: 1;
       }
 
@@ -165,16 +170,16 @@
         font-size: 13px;
       }
 
-      section { padding: 76px 0; }
+      section { padding: 74px 0; }
       .band { background: #fff; }
       .wrap { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
 
       .section-head {
         display: grid;
-        grid-template-columns: minmax(260px, 0.62fr) minmax(300px, 1fr);
-        gap: 46px;
+        grid-template-columns: minmax(260px, 0.58fr) minmax(320px, 1fr);
+        gap: 44px;
         align-items: end;
-        margin-bottom: 34px;
+        margin-bottom: 32px;
       }
 
       h2 {
@@ -195,6 +200,54 @@
         margin: 0;
         color: var(--muted);
         font-size: 17px;
+        overflow-wrap: anywhere;
+      }
+
+      .grid-3, .grid-4 {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+      .card, .robot-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 12px 34px rgba(27, 46, 33, 0.08);
+      }
+
+      .card { padding: 22px; }
+      .card p, .robot-card p { margin: 0; color: var(--muted); overflow-wrap: anywhere; }
+      .card strong { color: var(--green-dark); }
+
+      .robot-card { overflow: hidden; }
+      .robot-card img {
+        display: block;
+        width: 100%;
+        height: 170px;
+        object-fit: contain;
+        padding: 20px;
+        background: #f1f6f2;
+      }
+      .robot-card div { padding: 18px; }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .tag {
+        display: inline-flex;
+        padding: 5px 9px;
+        border-radius: 999px;
+        color: #435047;
+        background: #eef4ef;
+        font-size: 12px;
+        font-weight: 700;
       }
 
       .matrix {
@@ -212,7 +265,7 @@
       }
 
       th, td {
-        padding: 17px 18px;
+        padding: 16px 18px;
         border-bottom: 1px solid var(--line);
         vertical-align: top;
         text-align: left;
@@ -227,103 +280,48 @@
       tr:last-child td { border-bottom: 0; }
       td:first-child { color: var(--green-dark); font-weight: 800; }
 
-      .grid-2, .grid-3, .grid-4 { display: grid; gap: 18px; }
-      .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-      .card, .robot-card, .task-card {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0 12px 34px rgba(27,46,33,0.08);
-      }
-
-      .card { padding: 24px; }
-      .card p, .robot-card p, .task-card p { margin: 0; color: var(--muted); }
-
-      .robot-card { overflow: hidden; }
-      .robot-card img {
-        display: block;
-        width: 100%;
-        height: 176px;
-        object-fit: contain;
-        padding: 22px;
-        background: #f1f6f2;
-      }
-      .robot-card div { padding: 20px; }
-
-      .task-card { padding: 20px; }
-      .task-card strong {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--green-dark);
-      }
-
-      .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-      .tag {
-        display: inline-flex;
-        padding: 5px 9px;
-        border-radius: 999px;
-        color: #435047;
-        background: #eef4ef;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .level {
-        display: inline-flex;
-        min-width: 74px;
-        justify-content: center;
-        padding: 4px 10px;
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 800;
-      }
-      .strong { color: #0d5f3b; background: #dff3e6; }
-      .medium { color: #8a4b09; background: #fff0ce; }
-      .limited { color: #8d2e27; background: #fce1dd; }
-
-      .decision { border-left: 4px solid var(--green); }
-      .warning { border-left: 4px solid var(--orange); }
-      .risk { border-left: 4px solid var(--red); }
-
-      .pipeline {
+      .count-row {
         display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
       }
 
-      .pipe-node {
-        min-height: 142px;
+      .count-card {
+        min-height: 112px;
         padding: 18px;
         border: 1px solid var(--line);
         border-radius: 8px;
         background: #fff;
       }
-      .pipe-node strong { color: var(--green-dark); }
-      .pipe-node p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
 
-      .video {
-        position: relative;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #101813;
-        box-shadow: var(--shadow);
+      .count-card strong {
+        display: block;
+        color: var(--green-dark);
+        font-size: 26px;
+        line-height: 1;
       }
-      .video::before { content: ""; display: block; padding-top: 56.25%; }
-      .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+      .count-card span {
+        display: block;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
 
       .source-list {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 10px 24px;
-        margin: 26px 0 0;
+        margin: 24px 0 0;
         padding: 0;
         list-style: none;
       }
-      .source-list li { padding: 12px 0; border-bottom: 1px solid var(--line); }
+
+      .source-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--line);
+      }
 
       footer {
         padding: 34px 0;
@@ -333,25 +331,31 @@
       }
 
       @media (max-width: 920px) {
-        .topbar-inner { align-items: flex-start; flex-direction: column; padding: 14px 0; }
+        .topbar-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+        }
         nav { justify-content: flex-start; }
-        .hero-metrics, .section-head, .grid-2, .grid-3, .grid-4, .pipeline, .source-list {
+        .hero { min-height: auto; }
+        .hero-content { padding: 70px 0 112px; }
+        .hero-metrics, .section-head, .grid-3, .grid-4, .count-row, .source-list {
           grid-template-columns: 1fr;
         }
-        .hero { min-height: auto; }
-        .hero-content { padding: 72px 0 118px; }
       }
 
       @media (max-width: 560px) {
         .topbar-inner, .hero-content, .wrap {
-          width: calc(100% - 48px);
-          max-width: 1180px;
+          width: calc(100vw - 48px);
+          max-width: 342px;
         }
         section { padding: 56px 0; }
-        h1 { font-size: clamp(34px, 10vw, 44px); line-height: 1.1; }
+        h1 { font-size: clamp(32px, 9vw, 38px); line-height: 1.14; }
+        .eyebrow, .hero-lede, .section-head p, .card p, .robot-card p {
+          word-break: break-all;
+        }
         .hero-lede { font-size: 17px; }
-        .metric, .card, .task-card { padding: 18px; }
-        .hero-title-part, .lede-part { display: block; }
+        .metric, .card { padding: 18px; }
       }
     </style>
   </head>
@@ -360,218 +364,107 @@
       <div class="topbar-inner">
         <a class="brand" href="#top" aria-label="BEHAVIOR-1K report home">
           <img src="https://behavior.stanford.edu/assets/behavior_logo3.png" alt="BEHAVIOR logo">
-          <span>BEHAVIOR-1K 评测适用性</span>
+          <span>BEHAVIOR-1K 场景任务支持</span>
         </a>
         <nav aria-label="页面导航">
-          <a href="#conclusion">结论</a>
-          <a href="#support">能力支持</a>
-          <a href="#robots">机器人</a>
-          <a href="#tasks">任务</a>
-          <a href="#evaluation">评测指标</a>
-          <a href="#limits">边界</a>
+          <a href="#robots">支持机器人</a>
+          <a href="#scenes">支持场景</a>
+          <a href="#tasks">支持 Task</a>
+          <a href="#sources">来源</a>
         </nav>
       </div>
     </header>
 
     <div class="hero" id="top">
       <div class="hero-content">
-        <p class="eyebrow">具身智能大脑性能评测 | 数据口径：2026-07-02</p>
-        <h1><span class="hero-title-part">BEHAVIOR-1K</span><span class="hero-title-part">是否适合</span><span class="hero-title-part">评测大脑性能</span></h1>
-        <p class="hero-lede">
-          <span class="lede-part">结论：适合评测具身大脑在视觉感知、</span>
-          <span class="lede-part">导航、移动操作、任务规划、执行效率、</span>
-          <span class="lede-part">失败恢复上的综合能力。</span>
-          <span class="lede-part">不适合作为真实硬件控制性能</span>
-          <span class="lede-part">或安全合规的最终判据。</span>
-        </p>
-        <div class="hero-metrics" aria-label="BEHAVIOR-1K key metrics">
-          <div class="metric"><strong>1016</strong><span>知识库当前列出的任务定义</span></div>
-          <div class="metric"><strong>51</strong><span>知识库场景条目</span></div>
-          <div class="metric"><strong>12+</strong><span>官方机器人模型与变体</span></div>
-          <div class="metric"><strong>20k</strong><span>2026 Challenge 人类遥操作演示</span></div>
+        <p class="eyebrow">数据口径：2026-07-02 | 官方文档</p>
+        <h1><span class="h-line">BEHAVIOR-1K</span><span class="h-line">场景与任务</span><span class="h-line">支持清单</span></h1>
+        <p class="hero-lede">本页仅保留 BEHAVIOR-1K 当前可直接引用的三类支持范围：官方机器人、知识库场景、知识库 Task。</p>
+        <div class="hero-metrics" aria-label="BEHAVIOR-1K support metrics">
+          <div class="metric"><strong>12</strong><span>OmniGibson 官方文档口径 robots</span></div>
+          <div class="metric"><strong>51</strong><span>BEHAVIOR-1K Knowledgebase scenes</span></div>
+          <div class="metric"><strong>1016</strong><span>BEHAVIOR-1K Knowledgebase tasks</span></div>
         </div>
       </div>
     </div>
 
     <main>
-      <section id="conclusion">
-        <div class="wrap">
-          <div class="section-head">
-            <h2>评测适用性结论</h2>
-            <p>BEHAVIOR-1K 的核心价值在于用标准化日常任务检验大脑策略在复杂交互环境中的闭环表现，而不是只展示单个技能是否可运行。</p>
-          </div>
-          <div class="matrix">
-            <table>
-              <thead>
-                <tr>
-                  <th>评测维度</th>
-                  <th>支持程度</th>
-                  <th>可评测内容</th>
-                  <th>对大脑性能的意义</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>视觉感知</td>
-                  <td><span class="level strong">强</span></td>
-                  <td>RGB、深度、点云、语义/实例分割、2D/3D 框、光流、法向等。</td>
-                  <td>可评估目标识别、空间关系理解、遮挡下感知、状态估计。</td>
-                </tr>
-                <tr>
-                  <td>导航能力</td>
-                  <td><span class="level strong">强</span></td>
-                  <td>移动机器人和移动操作机器人支持底盘控制、LiDAR、occupancy grid 和位姿观测。</td>
-                  <td>可评估找物、跨房间移动、路径效率和导航-操作衔接。</td>
-                </tr>
-                <tr>
-                  <td>运动控制</td>
-                  <td><span class="level strong">强</span></td>
-                  <td>关节控制、差速底盘、IK、Operational Space Control、夹爪控制。</td>
-                  <td>可评估大脑输出动作是否能被控制器稳定执行。</td>
-                </tr>
-                <tr>
-                  <td>移动操作</td>
-                  <td><span class="level strong">强</span></td>
-                  <td>Fetch、Tiago、Stretch、R1、R1Pro 等现成机器人支持导航与抓取/放置组合。</td>
-                  <td>适合验证“看见目标、移动到位、执行操作、完成任务”的闭环。</td>
-                </tr>
-                <tr>
-                  <td>长程任务规划</td>
-                  <td><span class="level strong">强</span></td>
-                  <td>1000 级别日常活动任务，2026 Challenge 提供 100 个任务和公开实例。</td>
-                  <td>可评估任务分解、状态跟踪、子目标顺序和失败恢复。</td>
-                </tr>
-                <tr>
-                  <td>真实机器人迁移</td>
-                  <td><span class="level medium">中</span></td>
-                  <td>支持真机前筛选、数据预训练、失败模式分析。</td>
-                  <td>不能直接替代真机验证，仍需硬件控制、标定、安全和传感器噪声评估。</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <section class="band" id="support">
-        <div class="wrap">
-          <div class="section-head">
-            <h2>平台当前支持的机器人功能</h2>
-            <p>从“大脑评测”的角度，BEHAVIOR-1K 可提供完整的观测输入、动作输出、环境状态演化和任务成功判定。</p>
-          </div>
-          <div class="grid-3">
-            <article class="card decision">
-              <h3>视觉与空间感知</h3>
-              <p>支持 RGB、depth、depth linear、normal、semantic segmentation、instance segmentation、2D/3D bounding box、optical flow、point cloud。适合评测视觉 grounding、场景理解和空间推理。</p>
-            </article>
-            <article class="card decision">
-              <h3>导航与地图相关观测</h3>
-              <p>移动平台可配置 2D LiDAR 和 occupancy grid，并可读取机器人位置、姿态、线速度、角速度。适合评估目标搜索、路径选择和跨房间移动。</p>
-            </article>
-            <article class="card decision">
-              <h3>本体感知</h3>
-              <p>支持关节位置、关节速度、关节力矩、机器人位置、朝向、线速度和角速度。适合评估大脑对当前身体状态的利用能力。</p>
-            </article>
-            <article class="card decision">
-              <h3>底盘控制</h3>
-              <p>支持差速底盘控制；Challenge 配置中也使用全向底盘相关控制配置。适合评估导航动作、移动效率和移动操作时的位姿调整。</p>
-            </article>
-            <article class="card decision">
-              <h3>机械臂控制</h3>
-              <p>支持 JointController、InverseKinematicsController、OperationalSpaceController。适合评估从高层目标到末端位姿或关节动作的控制闭环。</p>
-            </article>
-            <article class="card decision">
-              <h3>夹爪控制</h3>
-              <p>支持 MultiFingerGripperController，包含 binary、smooth、independent 模式。适合评估抓取、释放、放置和容器操作。</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <section id="robots">
         <div class="wrap">
           <div class="section-head">
-            <h2>现有机器人对评测能力的覆盖</h2>
-            <p>如果目标是评测“大脑性能”，优先选择移动操作机器人。导航-only 机器人适合单独评估导航；固定机械臂适合单独评估局部操作；移动操作机器人适合评估完整具身闭环。</p>
+            <h2>支持机器人</h2>
+            <p>OmniGibson Robots 文档将机器人分为 navigation-only、manipulation-only、mobile manipulation 和 VR teleoperation proxy。每类机器人由 controllers 和 sensors 组成。</p>
           </div>
+
           <div class="grid-4">
+            <article class="robot-card">
+              <img src="https://behavior.stanford.edu/assets/robots/Turtlebot.png" alt="Turtlebot robot model">
+              <div>
+                <h3>Mobile Robots</h3>
+                <p>Turtlebot、Locobot、Husky、Freight。文档标注为 navigation-only robots。</p>
+                <div class="tag-row"><span class="tag">Base controller</span><span class="tag">Camera</span><span class="tag">LIDAR</span></div>
+              </div>
+            </article>
+            <article class="robot-card">
+              <img src="https://behavior.stanford.edu/assets/robots/FrankaPanda.png" alt="Franka robot model">
+              <div>
+                <h3>Manipulation Robots</h3>
+                <p>Franka、VX300S、A1、Franka Mounted。Franka 另列 FrankaAllegro、FrankaLeap、FrankaInspire 变体。</p>
+                <div class="tag-row"><span class="tag">Arm</span><span class="tag">Gripper</span><span class="tag">Wrist camera</span></div>
+              </div>
+            </article>
             <article class="robot-card">
               <img src="https://behavior.stanford.edu/assets/robots/Fetch.png" alt="Fetch robot model">
               <div>
-                <h3>Fetch</h3>
-                <p>支持底盘、头部相机、腕部相机、LiDAR、7-DOF 单臂和夹爪。适合作为通用移动操作评测基线。</p>
-                <div class="tag-row"><span class="tag">视觉</span><span class="tag">导航</span><span class="tag">单臂操作</span></div>
+                <h3>Mobile Manipulation</h3>
+                <p>Fetch、Tiago、Stretch、R1、R1Pro。文档标注为同时具备 base 与 gripper-equipped arms。</p>
+                <div class="tag-row"><span class="tag">Base</span><span class="tag">Head camera</span><span class="tag">Arm / gripper</span></div>
               </div>
             </article>
             <article class="robot-card">
-              <img src="https://behavior.stanford.edu/assets/robots/Tiago.png" alt="Tiago robot model">
+              <img src="https://behavior.stanford.edu/assets/robots/BehaviorRobot.png" alt="BehaviorRobot model">
               <div>
-                <h3>Tiago</h3>
-                <p>支持全向底盘、头部、双臂、双夹爪、头部和腕部相机、前后 LiDAR。适合双臂移动操作评测。</p>
-                <div class="tag-row"><span class="tag">视觉</span><span class="tag">导航</span><span class="tag">双臂操作</span></div>
-              </div>
-            </article>
-            <article class="robot-card">
-              <img src="https://behavior.stanford.edu/assets/robots/Stretch.png" alt="Stretch robot model">
-              <div>
-                <h3>Stretch</h3>
-                <p>支持移动底盘、头部相机、腕部相机、单臂和夹爪。适合家庭场景低复杂度移动操作。</p>
-                <div class="tag-row"><span class="tag">视觉</span><span class="tag">导航</span><span class="tag">单臂操作</span></div>
-              </div>
-            </article>
-            <article class="robot-card">
-              <img src="https://behavior.stanford.edu/assets/robots/R1Pro.png" alt="R1Pro robot model">
-              <div>
-                <h3>R1 / R1Pro</h3>
-                <p>支持全向底盘、双臂、双夹爪、头部相机和腕部相机。2026 Challenge 文档提供 R1Pro 评测配置示例。</p>
-                <div class="tag-row"><span class="tag">视觉</span><span class="tag">导航</span><span class="tag">双臂操作</span></div>
+                <h3>Additional Robot</h3>
+                <p>BehaviorRobot。官方说明为手工设计模型，仅用于 VR teleoperation。</p>
+                <div class="tag-row"><span class="tag">Base</span><span class="tag">Head</span><span class="tag">Dual arms</span></div>
               </div>
             </article>
           </div>
+
           <div class="matrix" style="margin-top: 26px;">
             <table>
               <thead>
                 <tr>
-                  <th>机器人类别</th>
-                  <th>代表模型</th>
-                  <th>视觉</th>
-                  <th>导航</th>
-                  <th>操作</th>
-                  <th>适合评测的大脑能力</th>
+                  <th>类别</th>
+                  <th>机器人</th>
+                  <th>Controllers</th>
+                  <th>Sensors</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>导航机器人</td>
+                  <td>Mobile Robots</td>
                   <td>Turtlebot、Locobot、Husky、Freight</td>
-                  <td>Camera，部分含 LiDAR</td>
-                  <td>支持</td>
-                  <td>不支持</td>
-                  <td>空间探索、目标搜索、路径规划、地图/局部避障策略。</td>
+                  <td>Base</td>
+                  <td>Camera、LIDAR</td>
                 </tr>
                 <tr>
-                  <td>固定/局部操作机器人</td>
-                  <td>Franka、VX300S、A1、Franka Mounted</td>
+                  <td>Manipulation Robots</td>
+                  <td>Franka、VX300S、A1、Franka Mounted；FrankaAllegro、FrankaLeap、FrankaInspire variants</td>
+                  <td>Arm、Gripper</td>
                   <td>Wrist Camera</td>
-                  <td>不支持</td>
-                  <td>支持</td>
-                  <td>局部抓取、放置、末端控制、对象状态变化。</td>
                 </tr>
                 <tr>
-                  <td>移动操作机器人</td>
+                  <td>Mobile Manipulation Robots</td>
                   <td>Fetch、Tiago、Stretch、R1、R1Pro</td>
-                  <td>Head / Wrist Camera，部分含 LiDAR</td>
-                  <td>支持</td>
-                  <td>支持</td>
-                  <td>完整具身闭环：视觉定位、导航到达、操作执行、任务完成。</td>
+                  <td>Base、Head、Arm、Gripper；Tiago / R1 / R1Pro 为双臂配置</td>
+                  <td>Head Camera、Wrist Camera(s)；Fetch / Tiago 含 LIDAR</td>
                 </tr>
                 <tr>
-                  <td>遥操作代理</td>
+                  <td>Additional Robots</td>
                   <td>BehaviorRobot</td>
+                  <td>Base、Head、Left Arm、Right Arm、Left Gripper、Right Gripper</td>
                   <td>Head Camera</td>
-                  <td>支持</td>
-                  <td>支持</td>
-                  <td>主要用于 VR teleoperation 数据采集，不建议作为最终大脑评测主体。</td>
                 </tr>
               </tbody>
             </table>
@@ -579,131 +472,206 @@
         </div>
       </section>
 
-      <section class="band" id="tasks">
+      <section class="band" id="scenes">
         <div class="wrap">
           <div class="section-head">
-            <h2>现有任务对大脑能力的覆盖</h2>
-            <p>BEHAVIOR-1K 的任务强调日常活动中的对象状态变化和多步骤执行。对大脑评测而言，任务价值不在数量本身，而在是否能形成可重复的能力分层。</p>
+            <h2>支持场景</h2>
+            <p>BEHAVIOR-1K Scene Knowledgebase 当前列出 51 个场景。表中字段包括 Scene、Rooms、Objects。</p>
           </div>
+
+          <div class="count-row" aria-label="scene category summary">
+            <div class="count-card"><strong>21+</strong><span>住宅、室内与花园类条目，含 Beechwood、Merom、Pomaria、Wainscott 等系列。</span></div>
+            <div class="count-card"><strong>4</strong><span>Grocery store 条目：asian、cafe、convenience、half_stocked。</span></div>
+            <div class="count-card"><strong>5</strong><span>Office 条目：bike、cubicles_left、cubicles_right、large、vendor_machine。</span></div>
+            <div class="count-card"><strong>6</strong><span>Restaurant 条目：asian、brunch、cafeteria、diner、hotel、urban。</span></div>
+          </div>
+
+          <div class="matrix">
+            <table>
+              <thead>
+                <tr>
+                  <th>场景组</th>
+                  <th>代表场景</th>
+                  <th>Rooms</th>
+                  <th>Objects</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>住宅 / 花园</td>
+                  <td>house_single_floor</td>
+                  <td>21</td>
+                  <td>950</td>
+                </tr>
+                <tr>
+                  <td>住宅 / 花园</td>
+                  <td>Wainscott_0_garden</td>
+                  <td>13</td>
+                  <td>479</td>
+                </tr>
+                <tr>
+                  <td>住宅 / 花园</td>
+                  <td>Beechwood_0_garden</td>
+                  <td>12</td>
+                  <td>346</td>
+                </tr>
+                <tr>
+                  <td>商店</td>
+                  <td>grocery_store_cafe</td>
+                  <td>5</td>
+                  <td>7020</td>
+                </tr>
+                <tr>
+                  <td>商店</td>
+                  <td>grocery_store_asian</td>
+                  <td>3</td>
+                  <td>3407</td>
+                </tr>
+                <tr>
+                  <td>办公</td>
+                  <td>office_large</td>
+                  <td>26</td>
+                  <td>1129</td>
+                </tr>
+                <tr>
+                  <td>餐饮</td>
+                  <td>restaurant_urban</td>
+                  <td>5</td>
+                  <td>1364</td>
+                </tr>
+                <tr>
+                  <td>餐饮</td>
+                  <td>restaurant_hotel</td>
+                  <td>6</td>
+                  <td>1050</td>
+                </tr>
+                <tr>
+                  <td>学校</td>
+                  <td>school_computer_lab_and_infirmary</td>
+                  <td>7</td>
+                  <td>796</td>
+                </tr>
+                <tr>
+                  <td>学校</td>
+                  <td>school_chemistry</td>
+                  <td>4</td>
+                  <td>741</td>
+                </tr>
+                <tr>
+                  <td>酒店 / 公共空间</td>
+                  <td>hall_conference_large</td>
+                  <td>3</td>
+                  <td>3387</td>
+                </tr>
+                <tr>
+                  <td>酒店 / 公共空间</td>
+                  <td>hotel_gym_spa</td>
+                  <td>9</td>
+                  <td>316</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="tasks">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>支持 Task</h2>
+            <p>BEHAVIOR-1K Task Knowledgebase 当前列出 1016 个 Task。表中字段包括 Task Name、Synsets、Matched Scenes、Predicates、Required Features。</p>
+          </div>
+
           <div class="grid-3">
-            <article class="task-card">
-              <strong>导航找物</strong>
-              <p>在住宅、餐厅、商店等场景中寻找目标物体或目标区域。评估视觉搜索、空间记忆和路径选择。</p>
+            <article class="card">
+              <h3>商店购买 / 装袋</h3>
+              <p><strong>示例：</strong>bag_groceries-0、buy_food_for_a_party-0、buy_school_supplies-0。常见场景包括 grocery_store_asian、grocery_store_cafe、grocery_store_convenience。</p>
             </article>
-            <article class="task-card">
-              <strong>取放与整理</strong>
-              <p>如 bag groceries、boxing books up for storage。评估抓取、放置、容器关系和多目标完成。</p>
+            <article class="card">
+              <h3>烹饪 / 厨房处理</h3>
+              <p><strong>示例：</strong>baking_sugar_cookies-0、baking_cookies_for_the_PTA_bake_sale-0、wash_fruit_and_vegetables-0。可涉及 cooked、filled、inside、ontop 等 predicates。</p>
             </article>
-            <article class="task-card">
-              <strong>开合与交互</strong>
-              <p>涉及门、抽屉、柜子、盖子等状态变化。评估对象可操作性理解和动作序列。</p>
+            <article class="card">
+              <h3>清洁 / 洗涤</h3>
+              <p><strong>示例：</strong>vacuuming_floors-0、wash_a_backpack-0、wash_baby_bottles-0、treating_stains-0。Required Features 可包含 visual substance、physical substance、cloth。</p>
             </article>
-            <article class="task-card">
-              <strong>清洁与覆盖</strong>
-              <p>如 washing windows、waxing floors。评估表面覆盖、工具使用和任务进度判断。</p>
+            <article class="card">
+              <h3>园艺 / 户外维护</h3>
+              <p><strong>示例：</strong>adding_chemicals_to_lawn-0、applying_pesticides-0、buy_basic_garden_tools-0、buy_used_gardening_equipment-0。常见场景包括 garden 与 grocery store。</p>
             </article>
-            <article class="task-card">
-              <strong>液体/物质操作</strong>
-              <p>如 watering plants、adding chemicals。评估容器、倾倒、填充、覆盖等对象状态变化。</p>
+            <article class="card">
+              <h3>泳池 / 热水浴缸</h3>
+              <p><strong>示例：</strong>adding_chemicals_to_hot_tub-0、adding_chemicals_to_pool-0、turning_on_the_hot_tub-0、turning_off_the_hot_tub-0。可涉及 contains、filled、toggled_on。</p>
             </article>
-            <article class="task-card">
-              <strong>长程日常活动</strong>
-              <p>如厨房、清洁、收纳类任务。评估规划、子目标排序、失败恢复和长程执行稳定性。</p>
+            <article class="card">
+              <h3>收纳 / 搬运 / 拆包</h3>
+              <p><strong>示例：</strong>unloading_groceries-0、unpacking_suitcase-0、unpacking_moving_van-0、unloading_shopping_items-0。常见 predicates 包括 ontop、inside、nextto。</p>
             </article>
           </div>
-          <div class="card warning" style="margin-top: 26px;">
-            <h3>建议的评测切入方式</h3>
-            <p>不建议直接评测全部 1000 级别任务。建议从现成任务中抽取 20 个左右，按“导航、视觉定位、单物体操作、多物体整理、容器操作、清洁覆盖、长程任务、失败恢复”分层，形成内部大脑能力基准。</p>
+
+          <div class="matrix" style="margin-top: 26px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Task 示例</th>
+                  <th>Synsets 摘要</th>
+                  <th>Matched Scenes 摘要</th>
+                  <th>Predicates / Required Features</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>adding_chemicals_to_hot_tub-0</td>
+                  <td>chlorine bottle、chlorine、water、hot tub、floor</td>
+                  <td>Beechwood_0_garden、Merom_0_garden、Pomaria_0_garden、Rs_garden、Wainscott_0_garden、house_single_floor 等</td>
+                  <td>contains、ontop、filled；physical substance</td>
+                </tr>
+                <tr>
+                  <td>bag_groceries-0</td>
+                  <td>canned food、sack、egg、checkout、apple、orange juice bottle、floor</td>
+                  <td>grocery_store_asian、grocery_store_cafe、grocery_store_convenience</td>
+                  <td>ontop、inside</td>
+                </tr>
+                <tr>
+                  <td>baking_sugar_cookies-0</td>
+                  <td>countertop、butter、sugar、egg、oven、flour、cookie sheet 等</td>
+                  <td>住宅场景与 restaurant_asian、restaurant_brunch、restaurant_diner、restaurant_hotel、restaurant_urban 等</td>
+                  <td>real、future、cooked、ontop、insource、inside、filled；transition、physical substance</td>
+                </tr>
+                <tr>
+                  <td>vacuuming_floors-0</td>
+                  <td>floor、vacuum、dust</td>
+                  <td>Beechwood_1_int、Wainscott_1_int、gates_bedroom、hotel_suite_large、house_single_floor 等</td>
+                  <td>covered、ontop；visual substance</td>
+                </tr>
+                <tr>
+                  <td>unloading_groceries-0</td>
+                  <td>cabinet、sack、yogurt、refrigerator、egg、bread、corn flakes、floor</td>
+                  <td>住宅场景与 restaurant_asian、restaurant_brunch、restaurant_cafeteria、restaurant_diner、restaurant_hotel、restaurant_urban 等</td>
+                  <td>open、ontop、inside</td>
+                </tr>
+                <tr>
+                  <td>wash_baby_bottles-0</td>
+                  <td>bottle、disinfectant、scrub brush、water、dishwasher、sink、floor</td>
+                  <td>住宅场景与 restaurant_brunch、restaurant_hotel、restaurant_urban 等</td>
+                  <td>ontop、insource、covered、inside、filled；physical substance</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
-      <section id="evaluation">
-        <div class="wrap">
-          <div class="section-head">
-            <h2>评测接口与指标</h2>
-            <p>大脑策略可通过动作数组与环境交互，也可按 Challenge 的 policy server 方式接入。评测不只看是否完成，还可量化效率。</p>
-          </div>
-          <div class="pipeline">
-            <article class="pipe-node">
-              <strong>输入</strong>
-              <p>RGB、Depth、本体感知、任务语言、相机视角等。</p>
-            </article>
-            <article class="pipe-node">
-              <strong>策略</strong>
-              <p>VLA、LLM planner、RL、TAMP 或混合系统。</p>
-            </article>
-            <article class="pipe-node">
-              <strong>动作</strong>
-              <p>动作维度需要匹配 robot.action_dim 与 controller_config。</p>
-            </article>
-            <article class="pipe-node">
-              <strong>环境</strong>
-              <p>OmniGibson 执行动作、更新物理状态、生成新观测。</p>
-            </article>
-            <article class="pipe-node">
-              <strong>输出</strong>
-              <p>成功率、部分成功、轨迹、视频、效率指标。</p>
-            </article>
-          </div>
-          <div class="grid-3" style="margin-top: 28px;">
-            <article class="card decision">
-              <h3>主指标</h3>
-              <p>Task success score。官方 Challenge 以目标 BDDL predicates 的满足比例计算部分成功，并跨任务平均。</p>
-            </article>
-            <article class="card decision">
-              <h3>效率指标</h3>
-              <p>模拟时间、底盘移动距离、末端执行器/手部位移。可用于判断大脑是否“完成但低效”。</p>
-            </article>
-            <article class="card decision">
-              <h3>可视化证据</h3>
-              <p>评测脚本可输出视频。对上级汇报而言，视频能直接展示大脑在感知、决策和执行上的失败模式。</p>
-            </article>
-          </div>
-          <div class="video" style="margin-top: 32px;">
-            <iframe src="https://player.vimeo.com/video/1115082804?badge=0&amp;autopause=0&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;title=0&amp;byline=0&amp;portrait=0&amp;controls=0" title="BEHAVIOR Challenge evaluation video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-      </section>
-
-      <section class="band" id="limits">
-        <div class="wrap">
-          <div class="section-head">
-            <h2>适用边界</h2>
-            <p>BEHAVIOR-1K 适合评测“大脑在仿真日常任务中的闭环能力”，但不应被表述为真实机器人能力的充分证明。</p>
-          </div>
-          <div class="grid-2">
-            <article class="card decision">
-              <h3>适合评测</h3>
-              <p>视觉理解、目标定位、导航与操作衔接、任务规划、对象状态跟踪、长程执行、失败恢复、策略效率、跨场景泛化。</p>
-            </article>
-            <article class="card risk">
-              <h3>不宜直接下结论</h3>
-              <p>真实硬件安全、低层伺服控制质量、末端力控可靠性、传感器噪声鲁棒性、真实接触动力学、真机部署稳定性。</p>
-            </article>
-          </div>
-          <div class="card warning" style="margin-top: 24px;">
-            <h3>对当前大脑评测的建议</h3>
-            <p>若目标是判断大脑性能，建议优先使用 Fetch 或 R1Pro 这类移动操作机器人，选择 20 个现成任务构成能力分层测试集，并报告成功率、部分成功、模拟时间、导航距离、末端位移和失败类型。该结果可作为真机测试前的筛选依据。</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="sources">
+      <section class="band" id="sources">
         <div class="wrap">
           <div class="section-head">
             <h2>依据来源</h2>
-            <p>本页数据和能力描述基于 BEHAVIOR / OmniGibson 官方文档与知识库。</p>
+            <p>本页仅引用 BEHAVIOR / OmniGibson 官方文档和 Knowledgebase 页面。</p>
           </div>
           <ul class="source-list">
             <li><a href="https://behavior.stanford.edu/omnigibson/robots.html" target="_blank" rel="noopener">OmniGibson Robots</a></li>
-            <li><a href="https://behavior.stanford.edu/omnigibson/sensors.html" target="_blank" rel="noopener">OmniGibson Sensors</a></li>
-            <li><a href="https://behavior.stanford.edu/omnigibson/controllers.html" target="_blank" rel="noopener">OmniGibson Controllers</a></li>
-            <li><a href="https://behavior.stanford.edu/knowledgebase/tasks/index.html" target="_blank" rel="noopener">BEHAVIOR-1K Task Knowledgebase</a></li>
-            <li><a href="https://behavior.stanford.edu/knowledgebase/scenes/index.html" target="_blank" rel="noopener">BEHAVIOR-1K Scene Knowledgebase</a></li>
-            <li><a href="https://behavior.stanford.edu/challenge/dataset.html" target="_blank" rel="noopener">2026 Challenge Dataset</a></li>
-            <li><a href="https://behavior.stanford.edu/challenge/evaluation.html" target="_blank" rel="noopener">2026 Challenge Evaluation and Rules</a></li>
-            <li><a href="https://behavior.stanford.edu/challenge/baselines.html" target="_blank" rel="noopener">2026 Challenge Baselines</a></li>
+            <li><a href="https://behavior.stanford.edu/knowledgebase/scenes/index.html" target="_blank" rel="noopener">BEHAVIOR-1K Scenes</a></li>
+            <li><a href="https://behavior.stanford.edu/knowledgebase/tasks/index.html" target="_blank" rel="noopener">BEHAVIOR-1K Tasks</a></li>
           </ul>
         </div>
       </section>
@@ -711,7 +679,7 @@
 
     <footer>
       <div class="wrap">
-        内部汇报版本。结论：BEHAVIOR-1K 适合作为具身智能大脑在真机测试前的仿真评测基准。
+        BEHAVIOR-1K 场景任务支持清单。数据口径：2026-07-02。
       </div>
     </footer>
   </body>
