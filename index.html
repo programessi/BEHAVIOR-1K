@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BEHAVIOR-1K | 场景任务支持清单</title>
-    <meta name="description" content="BEHAVIOR-1K 当前支持的机器人、场景与任务清单。">
+    <title>BEHAVIOR-1K | 高级函数与场景任务支持</title>
+    <meta name="description" content="BEHAVIOR-1K 当前支持的高级 action primitive、机器人、场景与任务清单。">
     <style>
       :root {
         --ink: #17211b;
@@ -250,6 +250,32 @@
         font-weight: 700;
       }
 
+      .status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 78px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .ready { color: #0f5f3d; background: #dff2e7; }
+      .partial { color: #835313; background: #fff1d0; }
+      .limited { color: #84322d; background: #f8dfdc; }
+      .symbolic { color: #245f93; background: #e1eef8; }
+
+      code {
+        padding: 2px 5px;
+        border-radius: 5px;
+        color: #183327;
+        background: #eef4ef;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 0.92em;
+      }
+
       .matrix {
         overflow-x: auto;
         border: 1px solid var(--line);
@@ -364,9 +390,10 @@
       <div class="topbar-inner">
         <a class="brand" href="#top" aria-label="BEHAVIOR-1K report home">
           <img src="https://behavior.stanford.edu/assets/behavior_logo3.png" alt="BEHAVIOR logo">
-          <span>BEHAVIOR-1K 场景任务支持</span>
+          <span>BEHAVIOR-1K 高级函数支持</span>
         </a>
         <nav aria-label="页面导航">
+          <a href="#primitives">高级函数</a>
           <a href="#robots">支持机器人</a>
           <a href="#scenes">支持场景</a>
           <a href="#tasks">支持 Task</a>
@@ -378,17 +405,198 @@
     <div class="hero" id="top">
       <div class="hero-content">
         <p class="eyebrow">数据口径：2026-07-02 | 官方文档</p>
-        <h1><span class="h-line">BEHAVIOR-1K</span><span class="h-line">场景与任务</span><span class="h-line">支持清单</span></h1>
-        <p class="hero-lede">本页仅保留 BEHAVIOR-1K 当前可直接引用的三类支持范围：官方机器人、知识库场景、知识库 Task。</p>
+        <h1><span class="h-line">BEHAVIOR-1K</span><span class="h-line">高级函数与</span><span class="h-line">场景任务支持</span></h1>
+        <p class="hero-lede">本页聚焦上游大脑规划能否落到 BEHAVIOR 已有的高级执行函数：函数名、参数、执行深度与机器人适配范围。</p>
         <div class="hero-metrics" aria-label="BEHAVIOR-1K support metrics">
-          <div class="metric"><strong>12</strong><span>OmniGibson 官方文档口径 robots</span></div>
-          <div class="metric"><strong>51</strong><span>BEHAVIOR-1K Knowledgebase scenes</span></div>
-          <div class="metric"><strong>1016</strong><span>BEHAVIOR-1K Knowledgebase tasks</span></div>
+          <div class="metric"><strong>9</strong><span>Starter physical primitive enum entries</span></div>
+          <div class="metric"><strong>14</strong><span>Symbolic primitive enum entries</span></div>
+          <div class="metric"><strong>Tiago / R1</strong><span>官方声明 Starter 当前适配范围</span></div>
         </div>
       </div>
     </div>
 
     <main>
+      <section id="primitives">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>高级函数支持层级</h2>
+            <p>BEHAVIOR 的高级函数位于 action primitive 层。上游大脑不能只输出自然语言，也不需要直接输出轮速或关节角；最合适的规划输出是 primitive 类型、目标对象实例，以及少量位姿参数。</p>
+          </div>
+
+          <div class="grid-3">
+            <article class="card">
+              <h3>Planner 推荐输出</h3>
+              <p><code>primitive</code> + <code>object instance</code>。例如 <code>NAVIGATE_TO(table_obj)</code>、<code>GRASP(cup_obj)</code>、<code>PLACE_ON_TOP(table_obj)</code>。对象必须是场景中的具体 object handle，不是文本类别。</p>
+            </article>
+            <article class="card">
+              <h3>通用调用形式</h3>
+              <p><code>apply_ref(primitive, *args, attempts=5)</code> 会生成逐步 robot action。另一个接口是离散 action：<code>(action_idx, obj_idx)</code>，其中 object 来自当前场景 addressable objects。</p>
+            </article>
+            <article class="card">
+              <h3>适配结论</h3>
+              <p>Starter physical primitive 官方声明仍是 example / work-in-progress，目前只适配 Tiago 和 R1，并要求 HolonomicBaseJointController / JointControllers 为 absolute position mode。</p>
+            </article>
+          </div>
+
+          <div class="matrix" style="margin-top: 26px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Starter 高级函数</th>
+                  <th>Planner 需要输入</th>
+                  <th>内部承接内容</th>
+                  <th>当前可用性</th>
+                  <th>机器人适配</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>NAVIGATE_TO(obj)</code></td>
+                  <td>目标对象实例，或对象列表。</td>
+                  <td>采样目标附近 2D 位姿，检查可达性，调用 base motion planning，生成逐步 action。</td>
+                  <td><span class="status ready">物理执行</span></td>
+                  <td>官方声明：Tiago、R1。其他机器人不应默认认为已适配。</td>
+                </tr>
+                <tr>
+                  <td><code>_navigate_to_pose(pose_2d)</code></td>
+                  <td><code>(x, y, yaw)</code>，可选 <code>skip_obstacle_update</code>。</td>
+                  <td>将 2D pose 转成 base footprint pose，经 CuRobo 规划 base 轨迹并执行。</td>
+                  <td><span class="status partial">内部函数</span></td>
+                  <td>适合二次封装为 planner 接口；官方高层 enum 中没有单独暴露该项。</td>
+                </tr>
+                <tr>
+                  <td><code>_navigate_to_pose_direct(pose_2d)</code></td>
+                  <td><code>(x, y, yaw)</code>，可选 <code>low_precision</code>。</td>
+                  <td>不做完整轨迹规划，按当前位置差值生成 holonomic 或 differential base action。</td>
+                  <td><span class="status partial">内部函数</span></td>
+                  <td>代码分支支持 HolonomicBaseJointController 与 DifferentialDriveController，但不等于官方全机器人 primitive 适配。</td>
+                </tr>
+                <tr>
+                  <td><code>GRASP(obj)</code></td>
+                  <td>待抓取对象实例。</td>
+                  <td>必要时先导航到对象附近，采样 pregrasp / grasp pose，移动手，执行 sticky 或 assisted grasp。</td>
+                  <td><span class="status ready">物理执行</span></td>
+                  <td>官方声明：Tiago、R1；要求机器人具备 manipulation 能力和合适 grasping mode。</td>
+                </tr>
+                <tr>
+                  <td><code>PLACE_ON_TOP(obj)</code></td>
+                  <td>目标承载对象实例；前提是手中已有物体。</td>
+                  <td>按 OnTop predicate 采样放置位姿，必要时导航，移动手并释放物体。</td>
+                  <td><span class="status ready">物理执行</span></td>
+                  <td>官方声明：Tiago、R1；要求目标对象支持 OnTop 放置关系。</td>
+                </tr>
+                <tr>
+                  <td><code>PLACE_INSIDE(obj)</code></td>
+                  <td>目标容器对象实例；前提是手中已有物体。</td>
+                  <td>按 Inside predicate 采样放置位姿，必要时导航，移动手并释放物体。</td>
+                  <td><span class="status ready">物理执行</span></td>
+                  <td>官方声明：Tiago、R1；要求目标对象支持 Inside 关系。</td>
+                </tr>
+                <tr>
+                  <td><code>RELEASE()</code></td>
+                  <td>无目标对象；依赖当前手中物体状态。</td>
+                  <td>将手指移动到 upper limit，并检查 release 后手中不再持有对象。</td>
+                  <td><span class="status ready">物理执行</span></td>
+                  <td>官方声明：Tiago、R1；要求 gripper controller 可用。</td>
+                </tr>
+                <tr>
+                  <td><code>OPEN(obj)</code> / <code>CLOSE(obj)</code></td>
+                  <td>可开合对象实例。</td>
+                  <td>接口存在，但 Starter 源码中 <code>_open_or_close</code> 直接抛出 NotImplementedError。</td>
+                  <td><span class="status limited">不可作为稳定项</span></td>
+                  <td>不建议作为当前物理执行能力汇报重点。</td>
+                </tr>
+                <tr>
+                  <td><code>TOGGLE_ON(obj)</code> / <code>TOGGLE_OFF(obj)</code></td>
+                  <td>可开关对象实例。</td>
+                  <td>接口存在，但 Starter 源码中 <code>_toggle</code> 直接抛出 NotImplementedError。</td>
+                  <td><span class="status limited">不可作为稳定项</span></td>
+                  <td>不建议作为当前物理执行能力汇报重点。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="matrix" style="margin-top: 26px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Symbolic 高级函数</th>
+                  <th>Planner 需要输入</th>
+                  <th>执行方式</th>
+                  <th>测评含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>GRASP</code>、<code>PLACE_ON_TOP</code>、<code>PLACE_INSIDE</code>、<code>RELEASE</code></td>
+                  <td>对象实例；place 类函数要求手中已有物体。</td>
+                  <td>不执行完整低层物理，而是通过直接设置对象位置、抓取关系或后置状态完成。</td>
+                  <td><span class="status symbolic">高层逻辑验证</span> 适合检验任务分解和对象关系，不代表真实动作执行。</td>
+                </tr>
+                <tr>
+                  <td><code>OPEN</code>、<code>CLOSE</code>、<code>TOGGLE_ON</code>、<code>TOGGLE_OFF</code></td>
+                  <td>具备 Open 或 ToggledOn state 的对象实例。</td>
+                  <td>直接设置 object state，并检查后置条件。</td>
+                  <td><span class="status symbolic">高层逻辑验证</span> 可用于状态规划测试，不应等同于物理开合/按键技能。</td>
+                </tr>
+                <tr>
+                  <td><code>SOAK_UNDER</code>、<code>SOAK_INSIDE</code>、<code>WIPE</code></td>
+                  <td>目标对象实例；通常要求手中已有可吸附或可清洁工具。</td>
+                  <td>检查 ParticleSource / Contains / Covered / ParticleRemover 等 object states，并直接更新相关状态。</td>
+                  <td><span class="status symbolic">物质状态验证</span> 适合评估任务前置条件与后置条件推理。</td>
+                </tr>
+                <tr>
+                  <td><code>CUT</code>、<code>PLACE_NEAR_HEATING_ELEMENT</code>、<code>NAVIGATE_TO</code></td>
+                  <td>切割目标、热源对象或导航目标对象实例。</td>
+                  <td>切割通过 transition rule，热源放置通过采样 predicate 位姿，symbolic 导航直接设置机器人 pose。</td>
+                  <td><span class="status symbolic">高层方法验证</span> 可验证 planner 是否选择正确工具和目标对象。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="matrix" style="margin-top: 26px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>机器人类别</th>
+                  <th>高级函数适配情况</th>
+                  <th>对大脑测评的含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Tiago、R1</td>
+                  <td><span class="status ready">官方声明适配</span> Starter physical primitives 当前明确只声明这两类机器人可用。</td>
+                  <td>最适合作为“primitive 层大脑测评”的起点，尤其是导航、抓取、放置链路。</td>
+                </tr>
+                <tr>
+                  <td>Fetch、Stretch、R1Pro</td>
+                  <td><span class="status partial">需验证</span> 机器人具备移动操作硬件模型，但 Starter primitive 源码未声明全量适配。</td>
+                  <td>可用于 controller 层或自定义 primitive 测试；不应直接承诺现成高层函数稳定可用。</td>
+                </tr>
+                <tr>
+                  <td>Turtlebot、Locobot、Husky、Freight</td>
+                  <td><span class="status limited">非目标适配</span> navigation-only 机器人没有手臂/夹爪，不能运行抓取和放置 primitive。</td>
+                  <td>适合点导航或底盘控制测评，不适合完整 object-level manipulation primitive 测评。</td>
+                </tr>
+                <tr>
+                  <td>Franka、VX300S、A1、Franka Mounted</td>
+                  <td><span class="status partial">局部操作</span> 具备操作结构，但无移动底盘；Starter 官方适配声明不包含这些机器人。</td>
+                  <td>适合局部抓取/放置控制实验，不适合导航-操作一体的 primitive 测评。</td>
+                </tr>
+                <tr>
+                  <td>BehaviorRobot</td>
+                  <td><span class="status limited">遥操作代理</span> 官方定位为 VR teleoperation proxy。</td>
+                  <td>不建议作为当前高级函数执行层测评主体。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <section id="robots">
         <div class="wrap">
           <div class="section-head">
@@ -669,6 +877,8 @@
             <p>本页仅引用 BEHAVIOR / OmniGibson 官方文档和 Knowledgebase 页面。</p>
           </div>
           <ul class="source-list">
+            <li><a href="https://behavior.stanford.edu/reference/action_primitives/starter_semantic_action_primitives.html" target="_blank" rel="noopener">Starter Semantic Action Primitives</a></li>
+            <li><a href="https://behavior.stanford.edu/reference/action_primitives/symbolic_semantic_action_primitives.html" target="_blank" rel="noopener">Symbolic Semantic Action Primitives</a></li>
             <li><a href="https://behavior.stanford.edu/omnigibson/robots.html" target="_blank" rel="noopener">OmniGibson Robots</a></li>
             <li><a href="https://behavior.stanford.edu/knowledgebase/scenes/index.html" target="_blank" rel="noopener">BEHAVIOR-1K Scenes</a></li>
             <li><a href="https://behavior.stanford.edu/knowledgebase/tasks/index.html" target="_blank" rel="noopener">BEHAVIOR-1K Tasks</a></li>
@@ -679,7 +889,7 @@
 
     <footer>
       <div class="wrap">
-        BEHAVIOR-1K 场景任务支持清单。数据口径：2026-07-02。
+        BEHAVIOR-1K 高级函数与场景任务支持清单。数据口径：2026-07-02。
       </div>
     </footer>
   </body>
