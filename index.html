@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BEHAVIOR-1K | 具身智能大脑验证底座</title>
+    <meta name="description" content="面向具身智能大脑能力验证的 BEHAVIOR-1K 汇报页：机器人、任务、自建成本、策略接入和 sim2real 边界。">
+    <style>
+      :root {
+        --ink: #17211b;
+        --muted: #5a675f;
+        --line: #d9e2db;
+        --paper: #f7faf7;
+        --panel: #ffffff;
+        --green: #1f7a4f;
+        --green-dark: #0f4f34;
+        --orange: #c26720;
+        --blue: #286ea8;
+        --red: #a53d35;
+        --shadow: 0 18px 50px rgba(25, 42, 31, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+        background: var(--paper);
+        line-height: 1.58;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: var(--green-dark);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        border-bottom: 1px solid rgba(217, 226, 219, 0.9);
+        background: rgba(247, 250, 247, 0.92);
+        backdrop-filter: blur(14px);
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        min-height: 62px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: 0;
+      }
+
+      .brand img {
+        width: 34px;
+        height: 34px;
+        object-fit: contain;
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 16px;
+        font-size: 14px;
+      }
+
+      nav a {
+        color: #304039;
+        white-space: nowrap;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 86vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        color: white;
+        background:
+          linear-gradient(90deg, rgba(10, 25, 16, 0.9), rgba(10, 25, 16, 0.66) 48%, rgba(10, 25, 16, 0.16)),
+          url("https://behavior.stanford.edu/assets/challenge_2025/dataset_rgb.png") center / cover no-repeat;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 110px;
+        background: linear-gradient(0deg, var(--paper), rgba(247, 250, 247, 0));
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 90px 0 140px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        margin: 0 0 18px;
+        padding: 7px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 999px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 13px;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 820px;
+        font-size: clamp(44px, 7vw, 86px);
+        line-height: 1.04;
+        letter-spacing: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .hero-lede {
+        max-width: 780px;
+        margin: 24px 0 0;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: clamp(18px, 2.3vw, 24px);
+        overflow-wrap: anywhere;
+      }
+
+      .hero-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(120px, 1fr));
+        gap: 12px;
+        max-width: 840px;
+        margin-top: 36px;
+      }
+
+      .metric {
+        min-height: 108px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.11);
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 27px;
+        line-height: 1;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 13px;
+      }
+
+      main {
+        position: relative;
+        z-index: 2;
+      }
+
+      section {
+        padding: 78px 0;
+      }
+
+      .band {
+        background: white;
+      }
+
+      .wrap {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.62fr) minmax(300px, 1fr);
+        gap: 46px;
+        align-items: end;
+        margin-bottom: 34px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.12;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        margin: 0 0 12px;
+        font-size: 20px;
+        line-height: 1.25;
+      }
+
+      .section-head p,
+      .lead {
+        margin: 0;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .matrix {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+        box-shadow: var(--shadow);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 860px;
+      }
+
+      th,
+      td {
+        padding: 18px 18px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+        text-align: left;
+      }
+
+      th {
+        color: #31433a;
+        font-size: 13px;
+        letter-spacing: 0;
+        background: #eef5ef;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      td:first-child {
+        font-weight: 800;
+        color: var(--green-dark);
+      }
+
+      .level {
+        display: inline-flex;
+        align-items: center;
+        min-width: 72px;
+        justify-content: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .low {
+        color: #0d5f3b;
+        background: #dff3e6;
+      }
+
+      .mid {
+        color: #8a4b09;
+        background: #fff0ce;
+      }
+
+      .high {
+        color: #8d2e27;
+        background: #fce1dd;
+      }
+
+      .grid-3,
+      .grid-4,
+      .grid-2 {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card,
+      .robot-card,
+      .task-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 12px 34px rgba(27, 46, 33, 0.08);
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .card p,
+      .robot-card p,
+      .task-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .robot-card {
+        overflow: hidden;
+      }
+
+      .robot-card img {
+        display: block;
+        width: 100%;
+        height: 190px;
+        object-fit: contain;
+        padding: 22px;
+        background: #f1f6f2;
+      }
+
+      .robot-card div {
+        padding: 20px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 9px;
+        border-radius: 999px;
+        color: #435047;
+        background: #eef4ef;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .task-card {
+        padding: 20px;
+      }
+
+      .task-card strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--green-dark);
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 26px;
+        align-items: center;
+      }
+
+      .media-panel {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+        box-shadow: var(--shadow);
+      }
+
+      .media-panel img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .media-caption {
+        padding: 12px 16px;
+        color: var(--muted);
+        font-size: 13px;
+        border-top: 1px solid var(--line);
+      }
+
+      .steps {
+        display: grid;
+        gap: 14px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        gap: 16px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+      }
+
+      .step-num {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        color: white;
+        background: var(--green);
+        font-weight: 900;
+      }
+
+      .step p {
+        margin: 4px 0 0;
+        color: var(--muted);
+      }
+
+      .code-line {
+        display: block;
+        margin-top: 12px;
+        padding: 12px 14px;
+        overflow-x: auto;
+        border-radius: 7px;
+        color: #dffbe7;
+        background: #18241d;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      .decision {
+        border-left: 4px solid var(--green);
+      }
+
+      .warning {
+        border-left: 4px solid var(--orange);
+      }
+
+      .risk {
+        border-left: 4px solid var(--red);
+      }
+
+      .pipeline {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .pipe-node {
+        min-height: 132px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+      }
+
+      .pipe-node strong {
+        color: var(--green-dark);
+      }
+
+      .pipe-node p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .video {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: #101813;
+        box-shadow: var(--shadow);
+      }
+
+      .video::before {
+        content: "";
+        display: block;
+        padding-top: 56.25%;
+      }
+
+      .video iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .roadmap {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .roadmap .card {
+        min-height: 220px;
+      }
+
+      .source-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px 24px;
+        margin: 26px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .source-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      footer {
+        padding: 36px 0;
+        color: #607067;
+        background: #ecf3ee;
+        font-size: 13px;
+      }
+
+      @media (max-width: 920px) {
+        .topbar-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+        }
+
+        nav {
+          justify-content: flex-start;
+          width: 100%;
+          overflow-x: auto;
+          padding-bottom: 2px;
+        }
+
+        nav a {
+          white-space: normal;
+        }
+
+        .hero-metrics,
+        .section-head,
+        .grid-2,
+        .grid-3,
+        .grid-4,
+        .split,
+        .pipeline,
+        .roadmap,
+        .source-list {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+        }
+
+        .hero-content {
+          padding: 74px 0 120px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .topbar-inner,
+        .hero-content,
+        .wrap {
+          width: calc(100% - 48px);
+          max-width: 1180px;
+        }
+
+        section {
+          padding: 56px 0;
+        }
+
+        .metric,
+        .card,
+        .task-card {
+          padding: 18px;
+        }
+
+        h1 {
+          font-size: clamp(34px, 10vw, 44px);
+          line-height: 1.1;
+        }
+
+        .hero-lede {
+          font-size: 17px;
+          max-width: 100%;
+          word-break: break-all;
+        }
+
+        .hero-title-part {
+          display: block;
+        }
+
+        .lede-part {
+          display: block;
+        }
+
+        .step {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#top" aria-label="BEHAVIOR-1K report home">
+          <img src="https://behavior.stanford.edu/assets/behavior_logo3.png" alt="BEHAVIOR logo">
+          <span>BEHAVIOR-1K 汇报页</span>
+        </a>
+        <nav aria-label="页面导航">
+          <a href="#matrix">支持</a>
+          <a href="#robots">机器人</a>
+          <a href="#tasks">任务</a>
+          <a href="#custom">自建</a>
+          <a href="#policy">策略</a>
+          <a href="#sim2real">迁移</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="hero" id="top">
+      <div class="hero-content">
+        <p class="eyebrow">具身智能大脑验证底座 | 数据口径：2026-07-02</p>
+        <h1><span class="hero-title-part">BEHAVIOR-1K 让</span><span class="hero-title-part">“大脑能力”</span><span class="hero-title-part">从演示走向</span><span class="hero-title-part">可复现实验</span></h1>
+        <p class="hero-lede">
+          <span class="lede-part">它不是单纯的仿真器，而是一套日常任务基准：</span>
+          <span class="lede-part">把场景、机器人、物体状态、任务目标、</span>
+          <span class="lede-part">策略接口和评测指标组织成闭环，</span>
+          <span class="lede-part">用于验证大脑模型的规划、感知、</span>
+          <span class="lede-part">操作和长程执行能力。</span>
+        </p>
+        <div class="hero-metrics" aria-label="BEHAVIOR-1K key metrics">
+          <div class="metric"><strong>1016</strong><span>知识库当前列出的任务定义</span></div>
+          <div class="metric"><strong>51</strong><span>官方知识库场景条目</span></div>
+          <div class="metric"><strong>12+</strong><span>官方文档列出的机器人模型与变体</span></div>
+          <div class="metric"><strong>20k</strong><span>2026 Challenge 人类遥操作 demo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <section id="matrix">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>先给上级看的结论</h2>
+            <p>BEHAVIOR-1K 对“大脑能力验证”的价值在于标准化：大脑输出策略，环境负责复杂交互、状态变化和可比较评测。真正成本集中在自定义机器人、自定义物理状态和 sim2real 对齐。</p>
+          </div>
+          <div class="matrix">
+            <table>
+              <thead>
+                <tr>
+                  <th>模块</th>
+                  <th>当前支持</th>
+                  <th>对大脑验证的意义</th>
+                  <th>接入难度</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>场景导入</td>
+                  <td>知识库列出 51 个场景，覆盖住宅、花园、餐厅、办公室、学校等。</td>
+                  <td>验证场景理解、对象关系、空间泛化和长程导航操作。</td>
+                  <td><span class="level low">低</span></td>
+                </tr>
+                <tr>
+                  <td>机器人导入</td>
+                  <td>Turtlebot、Locobot、Husky、Freight、Franka、VX300S、A1、Fetch、Tiago、Stretch、R1、R1Pro、BehaviorRobot 等。</td>
+                  <td>覆盖导航、单臂操作、双臂移动操作和 VR teleoperation 数据采集。</td>
+                  <td><span class="level mid">中</span></td>
+                </tr>
+                <tr>
+                  <td>任务搭建</td>
+                  <td>官方口径为 1000 级别日常任务；知识库当前显示 1016 个 task。</td>
+                  <td>直接验证任务分解、状态追踪、失败恢复和目标达成率。</td>
+                  <td><span class="level low">低</span></td>
+                </tr>
+                <tr>
+                  <td>自建 task</td>
+                  <td>使用 BDDL 定义 objects、init、goal，并通过采样生成实例。</td>
+                  <td>可把内部业务任务变成可复现 benchmark。</td>
+                  <td><span class="level mid">中</span></td>
+                </tr>
+                <tr>
+                  <td>策略引入</td>
+                  <td>环境支持 env.step(action)；Challenge 支持 policy server，通过 host/port 接入模型服务。</td>
+                  <td>大脑可以是 VLA、LLM planner、RL、TAMP 或模仿学习策略。</td>
+                  <td><span class="level mid">中</span></td>
+                </tr>
+                <tr>
+                  <td>Sim2Real</td>
+                  <td>支持自定义机器人、传感器、控制器和真实感视觉数据；官方有初步迁移研究。</td>
+                  <td>适合做真机前筛选、预训练、失败模式定位和任务难度分层。</td>
+                  <td><span class="level high">高</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="robots">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>目前支持哪些机器人</h2>
+            <p>对大脑验证最有价值的是移动操作机器人，因为它们同时要求导航、观测选择、抓取、放置和长程任务执行。导航-only 机器人适合做空间探索和定位；固定机械臂适合做局部操作。</p>
+          </div>
+          <div class="grid-4">
+            <article class="robot-card">
+              <img src="https://behavior.stanford.edu/assets/robots/Fetch.png" alt="Fetch robot model in OmniGibson">
+              <div>
+                <h3>Fetch</h3>
+                <p>移动底盘、升降躯干、头部相机、7-DOF 单臂和夹爪。适合通用移动操作基线。</p>
+                <div class="tags"><span class="tag">移动操作</span><span class="tag">单臂</span><span class="tag">RGB/LiDAR</span></div>
+              </div>
+            </article>
+            <article class="robot-card">
+              <img src="https://behavior.stanford.edu/assets/robots/Tiago.png" alt="Tiago robot model in OmniGibson">
+              <div>
+                <h3>Tiago</h3>
+                <p>全向底盘、升降躯干、头部、双 7-DOF 手臂和双夹爪。适合双臂协作任务。</p>
+                <div class="tags"><span class="tag">移动操作</span><span class="tag">双臂</span><span class="tag">高难度</span></div>
+              </div>
+            </article>
+            <article class="robot-card">
+              <img src="https://behavior.stanford.edu/assets/robots/Stretch.png" alt="Stretch robot model in OmniGibson">
+              <div>
+                <h3>Stretch</h3>
+                <p>Hello Robot Stretch 形态，适合家庭移动操作和低维控制验证。</p>
+                <div class="tags"><span class="tag">家庭场景</span><span class="tag">单臂</span><span class="tag">轻量</span></div>
+              </div>
+            </article>
+            <article class="robot-card">
+              <img src="https://behavior.stanford.edu/assets/robots/R1Pro.png" alt="R1 Pro robot model in OmniGibson">
+              <div>
+                <h3>R1 / R1Pro</h3>
+                <p>双臂全向移动操作平台。2026 Challenge 文档给出 R1Pro 评测配置示例。</p>
+                <div class="tags"><span class="tag">移动操作</span><span class="tag">双臂</span><span class="tag">Challenge</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="grid-3" style="margin-top: 18px;">
+            <article class="card">
+              <h3>导航-only</h3>
+              <p>Turtlebot、Locobot、Husky、Freight。适合空间探索、导航策略、地图理解，不适合完整 household manipulation 评测。</p>
+            </article>
+            <article class="card">
+              <h3>固定或局部操作</h3>
+              <p>Franka、VX300S、A1、Franka Mounted 及灵巧手变体。适合局部操作、抓取、物体状态变化，不覆盖移动长程闭环。</p>
+            </article>
+            <article class="card">
+              <h3>遥操作代理</h3>
+              <p>BehaviorRobot 主要面向 VR teleoperation 数据采集，可用于生成演示而不是最终真机形态对齐。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="tasks">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>有哪些现成任务可直接用</h2>
+            <p>BEHAVIOR-1K 的任务不是单步 pick-place，而是带物体状态、房间上下文和目标谓词的日常活动。官方 2026 Challenge 又从中选择 100 个任务，并提供 20,000 条 human demo。</p>
+          </div>
+          <div class="grid-3">
+            <article class="task-card">
+              <strong>厨房 / 烹饪</strong>
+              <p>如 brewing coffee、baking sugar cookies、boil water。验证容器、热源、液体、顺序规划和状态追踪。</p>
+            </article>
+            <article class="task-card">
+              <strong>清洁 / 家务</strong>
+              <p>如 washing windows、waxing floors、brushing lint off clothing。验证工具使用、表面覆盖、污渍状态和长程清理。</p>
+            </article>
+            <article class="task-card">
+              <strong>整理 / 收纳</strong>
+              <p>如 boxing books up for storage、bag groceries、assembling gift baskets。验证分类、放入、摆放和多目标完成。</p>
+            </article>
+            <article class="task-card">
+              <strong>购物 / 物资准备</strong>
+              <p>如 buy eggs、buy school supplies。验证在复杂场景中查找、选择、拿取和放置对象。</p>
+            </article>
+            <article class="task-card">
+              <strong>户外 / 花园</strong>
+              <p>如 adding chemicals to lawn、watering outdoor plants。验证开放环境、液体/粉末物质和区域覆盖。</p>
+            </article>
+            <article class="task-card">
+              <strong>家具 / 维护</strong>
+              <p>如 assembling furniture、washing walls。验证多步骤装配、工具使用和空间约束。</p>
+            </article>
+          </div>
+          <div class="split" style="margin-top: 34px;">
+            <div class="media-panel">
+              <img src="https://behavior.stanford.edu/assets/challenge_2026/overall_demo_duration.png" alt="BEHAVIOR Challenge overall demo duration plot">
+              <div class="media-caption">官方 2026 Challenge 数据集统计图，用于估计任务时长和评测成本。</div>
+            </div>
+            <div class="card decision">
+              <h3>建议给内部大脑先选 10 个任务</h3>
+              <p>不要一上来跑完整 1000 任务。先按能力分层挑 10 个：导航找物、单物体取放、多物体整理、开合门/抽屉、容器放入、液体倾倒、清洁覆盖、双臂协作、长程厨房任务、失败恢复任务。这样能快速定位大脑短板。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="custom">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>自建机器人和自建 task 的实际难度</h2>
+            <p>官方文档支持自定义，但“能导入”和“能作为严肃评测基座”不是一个难度。关键工作在控制器、传感器、碰撞、动作空间和任务状态定义。</p>
+          </div>
+          <div class="grid-2">
+            <div class="steps">
+              <article class="step">
+                <div class="step-num">1</div>
+                <div>
+                  <h3>自建机器人：低难度</h3>
+                  <p>移动底盘 + 相机 + 简单 base controller。适合导航和场景理解，不涉及复杂末端接触。</p>
+                </div>
+              </article>
+              <article class="step">
+                <div class="step-num">2</div>
+                <div>
+                  <h3>自建机器人：中难度</h3>
+                  <p>单臂移动操作。需要 URDF/USD、关节、夹爪、相机、controller_config、action_dim 和 reset pose 对齐。</p>
+                  <code class="code-line">model + name + obs_modalities + controller_config + eval.camera_sensor_names</code>
+                </div>
+              </article>
+              <article class="step">
+                <div class="step-num">3</div>
+                <div>
+                  <h3>自建机器人：高难度</h3>
+                  <p>双臂、灵巧手、复杂接触、CuRobo 碰撞球、传感器标定、真实控制频率和安全限制。</p>
+                </div>
+              </article>
+            </div>
+            <div class="steps">
+              <article class="step">
+                <div class="step-num">1</div>
+                <div>
+                  <h3>自建 task：低难度</h3>
+                  <p>复用已有物体和 predicate，写 BDDL 的 objects、init、goal，例如取放、放入、开关、整理。</p>
+                  <code class="code-line">:objects -> :init -> :goal</code>
+                </div>
+              </article>
+              <article class="step">
+                <div class="step-num">2</div>
+                <div>
+                  <h3>自建 task：中难度</h3>
+                  <p>需要 object state，如 open、inside、filled、covered、heated、sliced、saturated 等，并处理采样失败。</p>
+                </div>
+              </article>
+              <article class="step">
+                <div class="step-num">3</div>
+                <div>
+                  <h3>自建 task：高难度</h3>
+                  <p>新增物体类别、新状态、新 transition rule，或依赖液体、布料、热效应、切割等复杂物理交互。</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="policy">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>策略引入支持程度</h2>
+            <p>BEHAVIOR-1K 不要求大脑必须是某一种模型。只要能把观测转成动作，就可以通过本地 policy server 或环境 step 接进来；Challenge 文档已经给出 π0.5 和 GR00T N1.7 的接入流程。</p>
+          </div>
+          <div class="pipeline">
+            <article class="pipe-node">
+              <strong>观测</strong>
+              <p>RGB、Depth、本体感知、相机位姿、任务语言。</p>
+            </article>
+            <article class="pipe-node">
+              <strong>大脑</strong>
+              <p>VLA、LLM planner、RL policy、TAMP 或混合架构。</p>
+            </article>
+            <article class="pipe-node">
+              <strong>动作</strong>
+              <p>动作数组需匹配 robot.action_dim 和 controller_config。</p>
+            </article>
+            <article class="pipe-node">
+              <strong>环境</strong>
+              <p>OmniGibson 执行物理交互、状态变化和任务进度。</p>
+            </article>
+            <article class="pipe-node">
+              <strong>评测</strong>
+              <p>成功谓词、模拟时间、导航距离、末端位移和视频。</p>
+            </article>
+          </div>
+          <div class="grid-3" style="margin-top: 28px;">
+            <article class="card decision">
+              <h3>VLA / 模仿学习</h3>
+              <p>最顺。2026 Challenge demo 是 LeRobot V3 格式，并提供 π0.5、GR00T N1.7 finetune/eval 示例。</p>
+            </article>
+            <article class="card warning">
+              <h3>LLM planner + skill</h3>
+              <p>可行，但需要把高层 plan 映射到稳定低层技能。适合验证任务分解和失败恢复，不适合作为第一版纯端到端控制。</p>
+            </article>
+            <article class="card risk">
+              <h3>黑箱 API 大模型</h3>
+              <p>可通过 server 包装接入，但延迟、动作频率、成本和可复现性要单独控制，评测时不能使用 simulator-only privileged info。</p>
+            </article>
+          </div>
+          <div class="video" style="margin-top: 32px;">
+            <iframe src="https://player.vimeo.com/video/1115082804?badge=0&amp;autopause=0&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;title=0&amp;byline=0&amp;portrait=0&amp;controls=0" title="BEHAVIOR Challenge evaluation video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="sim2real">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>Sim2Real：能支持，但不能过度承诺</h2>
+            <p>对上级应该谨慎表述：BEHAVIOR-1K 是高保真仿真验证和预训练平台，不是开箱即用的真机部署系统。它能显著降低真机试错成本，但真机闭环还需要 ROS/控制栈、标定、安全和硬件工程。</p>
+          </div>
+          <div class="grid-2">
+            <article class="card decision">
+              <h3>适合做的事情</h3>
+              <p>任务筛选、策略预训练、失败模式发现、RGBD/本体观测对齐、机器人形态对齐、benchmark 排名、评测视频沉淀。</p>
+            </article>
+            <article class="card risk">
+              <h3>需要保留的风险</h3>
+              <p>接触动力学、摩擦、灵巧操作、布料、液体、热效应、传感器噪声、控制延迟和安全限制都会造成 reality gap。</p>
+            </article>
+          </div>
+          <div class="split" style="margin-top: 34px;">
+            <div class="card">
+              <h3>内部落地路线</h3>
+              <p class="lead">用 BEHAVIOR 作为“大脑上真机前”的系统性筛选层。</p>
+            </div>
+            <div class="roadmap">
+              <article class="card">
+                <h3>第 1 阶段</h3>
+                <p>选 10 个任务，使用官方机器人跑通现有 baseline，建立评测脚本和视频输出。</p>
+              </article>
+              <article class="card">
+                <h3>第 2 阶段</h3>
+                <p>接入内部大脑策略，记录成功率、失败原因、时间和动作效率。</p>
+              </article>
+              <article class="card">
+                <h3>第 3 阶段</h3>
+                <p>导入自研机器人形态，逐步对齐相机、动作空间和控制器。</p>
+              </article>
+              <article class="card">
+                <h3>第 4 阶段</h3>
+                <p>挑高价值任务迁移真机，用仿真失败库指导数据采集和安全策略。</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sources">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>官方依据和素材来源</h2>
+            <p>页面中的机器人图片、数据集图片、视频和统计口径均引用 BEHAVIOR 官方站点。若后续正式对外发布，建议再补充论文引用和内部实验结果。</p>
+          </div>
+          <ul class="source-list">
+            <li><a href="https://behavior.stanford.edu/" target="_blank" rel="noopener">BEHAVIOR 官方网站</a></li>
+            <li><a href="https://behavior.stanford.edu/omnigibson/robots.html" target="_blank" rel="noopener">OmniGibson Robots 文档</a></li>
+            <li><a href="https://behavior.stanford.edu/knowledgebase/tasks/index.html" target="_blank" rel="noopener">BEHAVIOR-1K Task Knowledgebase</a></li>
+            <li><a href="https://behavior.stanford.edu/knowledgebase/scenes/index.html" target="_blank" rel="noopener">BEHAVIOR-1K Scene Knowledgebase</a></li>
+            <li><a href="https://behavior.stanford.edu/behavior_components/behavior_tasks.html" target="_blank" rel="noopener">Task Definitions / BDDL 文档</a></li>
+            <li><a href="https://behavior.stanford.edu/challenge/dataset.html" target="_blank" rel="noopener">2026 Challenge Dataset 文档</a></li>
+            <li><a href="https://behavior.stanford.edu/challenge/baselines.html" target="_blank" rel="noopener">2026 Challenge Baselines 文档</a></li>
+            <li><a href="https://behavior.stanford.edu/challenge/evaluation.html" target="_blank" rel="noopener">2026 Challenge Evaluation and Rules 文档</a></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        本页用于内部汇报草案。核心定位：BEHAVIOR-1K 是具身智能大脑进入真机前的标准化仿真验证层。
+      </div>
+    </footer>
+  </body>
+</html>
